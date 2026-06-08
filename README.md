@@ -2,6 +2,7 @@
 
 Aplicación web para la gestión de citas médicas e historial clínico, desarrollada como proyecto final del semestre. Consume los endpoints REST del backend desarrollado en las prácticas previas.
 
+---
 
 ## Tecnologías
 
@@ -12,10 +13,14 @@ Aplicación web para la gestión de citas médicas e historial clínico, desarro
 | Vite | 5.0 | Servidor de desarrollo y empaquetador |
 | Axios | 1.6 | Llamadas HTTP al backend |
 
+---
 
 ## Requisitos
 
+- Node.js 18 o superior
 - Backend .NET corriendo en `http://localhost:5267`
+
+---
 
 ## Instalación y ejecución
 
@@ -26,6 +31,27 @@ npm install
 # Levantar en modo desarrollo
 npm run dev
 ```
+
+La aplicación estará disponible en `http://localhost:5173`
+
+---
+
+## Estructura del proyecto
+
+```
+src/
+├── main.js          # Punto de entrada, configuración de Vue y el router
+├── App.vue          # Componente raíz: navbar y área de contenido
+├── style.css        # Estilos globales
+├── api.js           # Todas las llamadas al backend (Axios)
+├── utils.js         # Utilidades: toasts, fechas, validaciones, estados
+└── views/
+    ├── Home.vue     # Página de inicio
+    ├── Citas.vue    # Módulo de citas médicas
+    └── Historial.vue# Módulo de historial clínico
+```
+
+---
 
 ## Módulos
 
@@ -42,6 +68,8 @@ npm run dev
 - Listado de evoluciones ordenadas por fecha descendente
 - Registro de nueva evolución con validación de fecha no futura
 - Indicador de carga al consultar y guardar
+
+---
 
 ## Endpoints consumidos
 

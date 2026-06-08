@@ -1,12 +1,12 @@
 <template>
   <div class="pagina">
 
-    <!-- Spinner -->
+    
     <div v-if="cargando" class="spinner-fondo">
       <div class="spinner"></div>
     </div>
 
-    <!-- Encabezado -->
+    
     <div class="encabezado">
       <div>
         <h1>Historial Clínico</h1>
@@ -17,7 +17,7 @@
       </button>
     </div>
 
-    <!-- Selector de paciente -->
+    
     <div class="selector-paciente">
       <div class="campo">
         <label>Selecciona un Paciente</label>
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <!-- Evoluciones -->
+    
     <div v-if="historiaId">
       <div v-if="evoluciones.length">
         <div v-for="e in evoluciones" :key="e.id" class="evolucion">
@@ -62,7 +62,7 @@
       </div>
     </div>
 
-    <!-- Modal nueva evolución -->
+    
     <div v-if="modal.abierto" class="modal-fondo" @click.self="cerrarModal">
       <div class="modal-caja">
         <div class="modal-cabecera">
@@ -122,14 +122,12 @@ import { ref, reactive, onMounted } from 'vue'
 import { getHistorias, getEvoluciones, getDoctores, postEvolucion } from '../api.js'
 import { toast, formatFecha, fechaNoFutura } from '../utils.js'
 
-// ── Datos ────────────────────────────────────────────────────
 const historias    = ref([])
 const doctores     = ref([])
 const evoluciones  = ref([])
 const historiaId   = ref(null)
 const cargando     = ref(false)
 
-// ── Modal ────────────────────────────────────────────────────
 const modal = reactive({
   abierto: false, error: '',
   errFecha: '', errDiag: '', errTrat: '',
@@ -148,7 +146,6 @@ function abrirModal() {
 
 function cerrarModal() { modal.abierto = false }
 
-// ── Carga inicial ─────────────────────────────────────────────
 onMounted(async () => {
   cargando.value = true
   try {
@@ -162,7 +159,6 @@ onMounted(async () => {
   }
 })
 
-// ── Seleccionar paciente ──────────────────────────────────────
 async function seleccionar(e) {
   const id = Number(e.target.value)
   historiaId.value  = id || null
@@ -172,7 +168,7 @@ async function seleccionar(e) {
   cargando.value = true
   try {
     const res = await getEvoluciones(id)
-    // H3: ordenar por fecha descendente
+    
     evoluciones.value = (res.data.datos || []).sort(
       (a, b) => new Date(b.fecha) - new Date(a.fecha)
     )
@@ -183,7 +179,6 @@ async function seleccionar(e) {
   }
 }
 
-// ── Guardar evolución ─────────────────────────────────────────
 async function guardarEvolucion() {
   modal.error = ''; modal.errFecha = ''; modal.errDiag = ''; modal.errTrat = ''
   let hayError = false
@@ -192,7 +187,7 @@ async function guardarEvolucion() {
     modal.error = 'Selecciona un doctor.'
     return
   }
-  // H6: fecha no futura
+  
   if (!modal.fecha || !fechaNoFutura(modal.fecha)) {
     modal.errFecha = 'La fecha no puede ser futura.'
     hayError = true

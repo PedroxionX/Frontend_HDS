@@ -1,12 +1,12 @@
 <template>
   <div class="pagina">
 
-    <!-- Spinner -->
+    
     <div v-if="cargando" class="spinner-fondo">
       <div class="spinner"></div>
     </div>
 
-    <!-- Encabezado -->
+    
     <div class="encabezado">
       <div>
         <h1>Citas Médicas</h1>
@@ -15,7 +15,7 @@
       <button class="btn btn-primario" @click="abrirCrear">+ Nueva Cita</button>
     </div>
 
-    <!-- Filtros -->
+    
     <div class="filtros">
       <div class="filtro-item">
         <label>Fecha</label>
@@ -42,7 +42,7 @@
       </button>
     </div>
 
-    <!-- Tabla -->
+    
     <div class="tabla-wrap">
       <table v-if="citasFiltradas.length">
         <thead>
@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <!-- Modal nueva / editar cita -->
+    
     <div v-if="modal.abierto" class="modal-fondo" @click.self="cerrarModal">
       <div class="modal-caja">
         <div class="modal-cabecera">
@@ -153,7 +153,7 @@
       </div>
     </div>
 
-    <!-- Diálogo de confirmación -->
+    
     <div v-if="confirm.abierto" class="confirm-fondo" @click.self="cerrarConfirm">
       <div class="confirm-caja">
         <h3>Cancelar esta cita</h3>
@@ -173,13 +173,11 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { getCitas, postCita, putCita, deleteCita, getPacientes, getDoctores } from '../api.js'
 import { toast, ESTADOS, getEstado, formatFechaHora, soloFecha, soloHora, combinaFechaHora, fechaNoPassada } from '../utils.js'
 
-// ── Datos ────────────────────────────────────────────────────
 const citas     = ref([])
 const pacientes = ref([])
 const doctores  = ref([])
 const cargando  = ref(false)
 
-// ── Filtros ──────────────────────────────────────────────────
 const filtros = reactive({ fecha: '', estado: '', paciente: '' })
 
 const citasFiltradas = computed(() => {
@@ -195,7 +193,6 @@ function limpiarFiltros() {
   filtros.fecha = ''; filtros.estado = ''; filtros.paciente = ''
 }
 
-// ── Modal ────────────────────────────────────────────────────
 const modal = reactive({
   abierto: false, modo: 'crear', id: null,
   error: '', errFecha: '', errMotivo: '',
@@ -224,13 +221,11 @@ function abrirEditar(c) {
 
 function cerrarModal() { modal.abierto = false }
 
-// ── Confirmación ─────────────────────────────────────────────
 const confirm = reactive({ abierto: false, id: null })
 
 function pedirConfirmar(id) { confirm.id = id; confirm.abierto = true }
 function cerrarConfirm()    { confirm.abierto = false; confirm.id = null }
 
-// ── Carga inicial ─────────────────────────────────────────────
 onMounted(async () => {
   cargando.value = true
   try {
@@ -245,7 +240,6 @@ onMounted(async () => {
   }
 })
 
-// ── Guardar (crear o editar) ──────────────────────────────────
 async function guardarCita() {
   modal.error = ''; modal.errFecha = ''; modal.errMotivo = ''
   let hayError = false
@@ -267,7 +261,7 @@ async function guardarCita() {
   }
   if (hayError) return
 
-  // C5: verificar cita duplicada (mismo paciente, misma fecha/hora)
+  
   const duplicado = citas.value.find(c =>
     String(c.idPaciente) === String(modal.idPaciente) &&
     soloFecha(c.fechaHora) === modal.fecha &&
@@ -312,7 +306,6 @@ async function guardarCita() {
   }
 }
 
-// ── Cancelar cita ─────────────────────────────────────────────
 async function cancelarCita() {
   const id = confirm.id
   cerrarConfirm()
